@@ -28,9 +28,10 @@ cutoff = 4;
 order = 4;
 PD = 0.60 ;  
 
-g = '0.01*y(1).*y(1).*y(1)'; % epsilon discrepancy
+%g = '0.01*y(1).*y(1).*y(1)'; % epsilon discrepancy
 % g = ['0.001*y(',num2str(inState),').^3']; % epsilon discrepancy
-% g = '0.0';
+g = '0.0';
+h = '0.01*y.*y.*y'; % epsilon discrepancy
 
 lowpass_filter = 0; % 1 == filter, 0 == no filter
 system = 'Vanderpol';
@@ -58,24 +59,6 @@ testSet.Y = Y(round(PD*length(Y)):end,:);
 
 trainSet.Z = Z(1:round(PD*length(Z)),:);
 testSet.Z = Z(round(PD*length(Z)):end,:);
-
-%% Time Delay for continuous time system
-% needed to "artificially inflate" state space
-
-%{
-% p = 50;
-% nOrder = size(trainSet.E, 2); % mm1 = m - 1 time_dynamics = zeros(r, mm1);
-% q = length(trainSet.E)-p; % length of each Hankel matrix row
-% 
-% Y_H=[];
-% E_H=[];
-% for j=1:p
-%     Y_H=[Y_H; trainSet.Y(j:q+j,:)];
-%     E_H=[E_H; trainSet.E(j:q+j,1)];
-% end
-% Y_H; % input; state space measurements
-% E_H; % output; discrepancy dynamics
-%}
 
 %% Perform Gaussian Process regression on discrepancy signal
 

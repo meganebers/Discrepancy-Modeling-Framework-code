@@ -22,8 +22,8 @@ addpath('./sparsedynamics - Brunton/utils');
 
 %% Generage true dynamics (z) and measurement dynamics (y)
 
-%{
-noise = 0.00;
+%
+noise = 0.0;
 dt = 0.01;
 tlength = 50;
 tspan = [0:dt:tlength];
@@ -38,7 +38,7 @@ g = '0.01*y(1).*y(1).*y(1)'; % epsilon discrepancy
 lowpass_filter = 0; % 1 == filter, 0 == no filter
 
 system = 'Vanderpol'; r = 15; p = 100; % = rank, p = time delays
-system = 'Lorenz'; r = 50; p = 300; % = rank, p = time delays
+%system = 'Lorenz'; r = 50; p = 300; % = rank, p = time delays
 %}
 
 eval(['discrepancyDynamics_',system])

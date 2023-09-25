@@ -6,7 +6,7 @@ n = 2;
 %% vanderpol system
 
 mu = 0.5;  % Vanderpol
-x0 = [0.1; 5];  % Initial condition
+x0 = [0.1; 0.1];  % Initial condition
 ep = 0.1; % discrepancy magnitude
 
 N = length(tspan);

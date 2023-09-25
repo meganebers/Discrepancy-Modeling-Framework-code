@@ -20,15 +20,15 @@ addpath('./sparsedynamics - Brunton/utils');
 
 %% Generage true dynamics (z) and measurement dynamics (y)
 
-%{
+%
 noise = 0.00;
-dt = 0.01;
-tlength = 20; 
+dt = 0.001;
+tlength = 50; 
 tspan = [0:dt:tlength];
 cutoff = 4;
 polyorder = 3;
 usesine = 0;
-lambda = 0.0085; % lambda is our sparsification knob; Vanderpol (0.0085)
+lambda = 0.0095; % lambda is our sparsification knob; Vanderpol (0.0085)
 PD = 0.60 ;  
 
 g = '0.01*y(1).*y(1).*y(1)'; % epsilon discrepancy
@@ -134,7 +134,7 @@ end
 
 figure,
 for i = 1:n
-    subplot(1,n,i)
+    subplot(n,1,i)
     plot(tA,xA(:,i),'k','Linewidth',[2]), hold on % Truth
     plot(tC,xC(:,i),'b--','Linewidth',[2]), hold on % Plato
     plot(tB,xB(:,i),'r--','Linewidth',[2]), hold on % Augmented
@@ -142,8 +142,45 @@ for i = 1:n
     grid on,
 end
 sgtitle('Forecasting Over Training Data')
-legend('True','Plato','Augmented') 
+%legend('True','Plato','Augmented') 
 
-set(gcf,'position',[100,300,1200,400])
+set(gcf,'position',[100,300,1200,400],'DefaultFigureRenderer', 'painters')
+
+%%
+
+state = 1;
+
+figure, 
+plot(tspan,trainSet.X(:,state),'b-','Linewidth',[5])
+hold on
+plot(tspan,trainSet.Y(:,state),'r-','Linewidth',[5]), 
+hold on,
+plot(tR,xR(:,state),'k--','Linewidth',[5]),
+hold on, 
+plot(tC,xC(:,state),'b-','Linewidth',[5]), hold on % Plato
+hold on
+plot(tB,xB(:,state),'r-','Linewidth',[5]),
+hold on, 
+plot(tA,xA(:,state),'k--','Linewidth',[5]), 
+hold on,
+xline(tA(1),'k','Linewidth',[2])
+
+state = 2;
+
+figure, 
+plot(tspan,trainSet.X(:,state),'b-','Linewidth',[5])
+hold on
+plot(tspan,trainSet.Y(:,state),'r-','Linewidth',[5]), 
+hold on,
+plot(tR,xR(:,state),'k--','Linewidth',[5]),
+hold on, 
+plot(tC,xC(:,state),'b-','Linewidth',[5]), hold on % Plato
+hold on
+plot(tB,xB(:,state),'r-','Linewidth',[5]),
+hold on, 
+plot(tA,xA(:,state),'k--','Linewidth',[5]), 
+hold on,
+xline(tA(1),'k','Linewidth',[2])
+
 
 return;

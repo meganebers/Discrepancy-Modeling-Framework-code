@@ -18,15 +18,15 @@ addpath('./sparsedynamics - Brunton/utils');
 
 %% Generage true dynamics (z) and measurement dynamics (y)
 
-%{
+%
 noise = 0.00;
-dt = 0.01;
+dt = 0.001;
 tlength = 50; 
 tspan = [0:dt:tlength];
 cutoff = 4;
 polyorder = 3;
 usesine = 0;
-lambda = 0.0085;
+lambda = 0.0095; % lambda is our sparsification knob; Vanderpol (0.0085)
 PD = 0.60 ;  
 
 g = '0.01*y(1).*y(1).*y(1)'; % epsilon discrepancy
@@ -36,7 +36,7 @@ g = '0.01*y(1).*y(1).*y(1)'; % epsilon discrepancy
 lowpass_filter = 0; % 1 == filter, 0 == no filter
 
 system = 'Vanderpol';
-system = 'Lorenz';
+%system = 'Lorenz';
 %}
 
 eval(['discrepancyDynamics_',system])
@@ -163,14 +163,38 @@ set(gcf,'position',[100,300,1200,400])
 
 %% Calculate RSME of state space error
 
-% clear RMSE_plato RMSE_aug perChange
-% 
-% RMSE_plato = sqrt(mean((xA(:,1) - xC(:,1)).^2));
-% RMSE_aug = sqrt(mean((xA(:,1) - ( xB+xC(:,1) )).^2));
-% perChange = (RMSE_plato-RMSE_aug)/(RMSE_plato)*100;
-% 
-% disp(['RMSE of Platonic state space error: ',num2str(RMSE_plato)])
-% disp(['RMSE of Augemented state space error: ',num2str(RMSE_aug)])
-% disp(['Percent decrease in RMSE: ',num2str(perChange),'%'])
+state = 1;
+
+figure, 
+plot(trainSet.T,trainSet.Y(:,state),'r-','Linewidth',[5]), 
+hold on
+plot(trainSet.T,trainSet.X(:,state),'b-','Linewidth',[5])
+hold on,
+plot(tR,xR(:,state),'k--','Linewidth',[5]),
+hold on
+plot(tA,xA(:,state),'r-','Linewidth',[5]), %true
+hold on, 
+plot(tC,xC(:,state),'b-','Linewidth',[5]), 
+hold on % Plato
+plot(tB,xB(:,state),'k--','Linewidth',[5]), % approx
+hold on, 
+xline(tA(1),'k','Linewidth',[2])
+
+state = 2;
+
+figure, 
+plot(trainSet.T,trainSet.Y(:,state),'r-','Linewidth',[5]), 
+hold on
+plot(trainSet.T,trainSet.X(:,state),'b-','Linewidth',[5])
+hold on,
+plot(tR,xR(:,state),'k--','Linewidth',[5]),
+hold on
+plot(tA,xA(:,state),'r-','Linewidth',[5]), %true
+hold on, 
+plot(tC,xC(:,state),'b-','Linewidth',[5]), 
+hold on % Plato
+plot(tB,xB(:,state),'k--','Linewidth',[5]), % approx
+hold on, 
+xline(tA(1),'k','Linewidth',[2])
 
 return;
